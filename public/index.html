@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Realtime Chat</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link rel="stylesheet" href="styles.css">
+        <script src="socket.io/socket.io.js"></script>
+    </head>
+
+    <body>
+
+        <div class="page-wrap">
+            <div class="page-content">
+                <h1 class="title">Realtime Chat</h1>
+                <div class="container">
+                    <div class="chat">
+                        <ul class="messages">
+                        </ul>
+                    </div>
+                    <div class="bottom">
+                        <form class="send-message">
+                            <input type="text" placeholder="Message">
+                            <button type="submit" class="send">SEND</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <script src="main.js"></script>
+
+    </body>
+
+</html>
