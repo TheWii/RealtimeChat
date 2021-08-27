@@ -1,11 +1,24 @@
 console.log('> Script started.');
 
-const socket = io();
 const form = document.querySelector('.send-message');
 const inpMsg = form.querySelector('input');
 const ulMessages = document.querySelector('ul.messages');
+const spanName = document.querySelector('.name .value');
+const spanUsers = document.querySelector('.users .value');
 
-const manager = messageManager(socket);
+window.addEventListener('resize', resizeChat, true);
+function resizeChat(event) {
+    ulMessages.style.height = `0`;
+    const chat = document.querySelector('.chat');
+    const height = chat.clientHeight;
+    ulMessages.style.height = `${height}px`;
+}
+resizeChat(null);
+
+
+const socket = io();
+const manager = MessageManager(socket);
+
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -13,7 +26,7 @@ form.addEventListener('submit', (e) => {
 });
 
 
-function messageManager(socket) {
+function MessageManager(socket) {
 
     const messages = [];
 
@@ -30,6 +43,8 @@ function messageManager(socket) {
         };
         sendMessage(message);
         appendMessage(message);
+        message.element.classList.add('pending');
+        message.pending = true;
     }
 
     function sendMessage(message) {
@@ -50,19 +65,37 @@ function messageManager(socket) {
         appendMessage(message);
     }
 
-    function appendMessage(message) {
-        const l = ulMessages;
-        const element = createMessageElement(message);
+    socket.on('user-joined', userJoined);
+    function userJoined(notif) {
+        spanUsers.innerHTML = notif.usersAmount;
+        notif.type = "server";
+        notif.text = `${notif.userName} joined the chat`;
+        notif.element = createNotification(notif);
+        appendToChat(notif);
+    }
 
-        // scroll to the bottom
-        const scrollPos = l.scrollHeight - l.offsetHeight;
-        const autoScroll = Math.abs(l.scrollTop - scrollPos) < 1;
-        l.appendChild(element);
-        if (autoScroll) l.scrollTop = l.scrollHeight;
+    socket.on('user-left', userLeft);
+    function userLeft(notif) {
+        spanUsers.innerHTML = notif.usersAmount;
+        notif.type = "server";
+        notif.text = `${notif.userName} left the chat`;
+        notif.element = createNotification(notif);
+        appendToChat(notif);
+    }
 
-        message.element = element;
+    function appendToChat(message) {
+        const ul = ulMessages;
+        const scrollPos = ul.scrollHeight - ul.offsetHeight;
+        const autoScroll = Math.abs(ul.scrollTop - scrollPos) < 1;
+        ul.appendChild(message.element);
+        if (autoScroll) ul.scrollTop = ul.scrollHeight;
         messages.push(message);
         if (messages.length > 100) messages.shift();
+    }
+
+    function appendMessage(message) {
+        message.element = createMessageElement(message);
+        appendToChat(message);
     }
 
     function createMessageElement(message) {
@@ -72,6 +105,7 @@ function messageManager(socket) {
         
         const inner = document.createElement('div');
         inner.classList.add('inner');
+        element.appendChild(inner);
 
         const sender = document.createElement('span');
         sender.classList.add('sender');
@@ -83,7 +117,23 @@ function messageManager(socket) {
         text.appendChild(document.createTextNode(message.text));
         inner.appendChild(text);
 
+        return element;
+    }
+
+    function createNotification(notif) {
+        const element = document.createElement('li');
+        element.classList.add('message', 'server');
+        //if (notif.senderId === socket.id) element.classList.add('mine');
+        
+        const inner = document.createElement('div');
+        inner.classList.add('inner');
         element.appendChild(inner);
+
+        const text = document.createElement('span');
+        text.classList.add('text');
+        text.appendChild(document.createTextNode(notif.text));
+        inner.appendChild(text);
+
         return element;
     }
 
@@ -100,4 +150,5 @@ socket.on('connect', () => {
 
 socket.on('save-data', (key, value) => {
     socket[key] = value;
+    spanName.innerHTML = socket.username;
 })

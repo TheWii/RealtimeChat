@@ -15,19 +15,6 @@ const manager = MessageManager(sockets);
 app.use(express.static('public'));
 
 
-// on client connection / disconnection
-sockets.on('connection', (socket) => {
-    clients[socket.id] = socket;
-    socket.on('disconnect', () => {
-        delete clients[socket.id];
-        console.log(`Client disconnected from server (id: ${socket.id}).`);
-    });
-    socket.on('send-message', manager.sendMessage);
-    socket.username = generateName();
-    socket.emit('save-data', 'username', socket.username);
-    console.log(`Client connected to server (id: ${socket.id}, username: ${socket.username}).`);
-});
-
 function generateName() {
     return 'Guest' + Math.floor(Math.random()*1000);
 }
@@ -39,6 +26,29 @@ function MessageManager(sockets) {
     let currentId = 1;
     function nextId() {
         return currentId++;
+    }
+
+
+    function clientSetup(client) {
+        client.on('disconnect', () => disconnection(client));
+        client.on('send-message', sendMessage);
+    }
+    
+    sockets.on('connection', connection);
+    function connection(client) {
+        clients[client.id] = client;
+        clientSetup(client);
+        client.username = generateName();
+        client.emit('save-data', 'username', client.username);
+        notifyUserJoined(client)
+        console.log(`Client connected to server (id: ${client.id}, username: ${client.username}).`);
+
+    }
+
+    function disconnection(client) {
+        delete clients[client.id];
+        notifyUserLeft(client);
+        console.log(`Client disconnected from server (id: ${client.id}).`);
     }
 
     function sendMessage(message, callback) {
@@ -54,17 +64,42 @@ function MessageManager(sockets) {
         broadcastMessage(message);
     }
     
+
     function broadcastMessage(message) {
-        console.log(`Broadcasting message:`);
-        console.log(message);
+        console.log(`Broadcasting message by ${message.senderId}.`);
+        //console.log(message);
         sockets.emit('broadcast-message', message);
+    }
+
+    function notifyUserJoined(user) {
+        const notification = {
+            userId: user.id,
+            userName: user.username,
+            joinedAt: Date.now(),
+            usersAmount: Object.keys(clients).length
+        };
+        sockets.emit('user-joined', notification);
+    }
+    function notifyUserLeft(user) {
+        const notification = {
+            userId: user.id,
+            userName: user.username,
+            leftAt: Date.now(),
+            usersAmount: Object.keys(clients).length
+        };
+        sockets.emit('user-left', notification);
     }
     
     return {
         messages,
         nextId,
+        clientSetup,
+        connection,
+        disconnection,
         sendMessage,
         broadcastMessage,
+        notifyUserJoined,
+        notifyUserLeft
     }
 }
 

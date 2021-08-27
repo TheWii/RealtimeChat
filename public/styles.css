@@ -3,18 +3,27 @@
     --scroll-track: #00000000;
     --scroll-thumb: #adadad;
     --scroll-thumb-hover: #9b9b9b;
+
     --background: #e7f7fa;
     --title: #19bdda;
     --chat-background:#f7fbff;
     --button-text: #33c2db;
     --button-text-contrast: #ffffff;
+
     --message: #000000;
     --message-mine: #000000;
+    --message-pending: #838383;
+    --message-server: #000000;
+    --message-server-user: #2c721a;
+
     --message-background: #d1ffc5;
     --message-mine-background: #dde3fa;
+    --message-pending-background: #e4e8f8;
+    --message-server-background: #ebebeb;
+
     --message-sender: #2e6421;
     --message-mine-sender: #323c61;
-    --pending-message: #ccccff;
+    --message-pending-sender: #777777;
 }
 
 
@@ -111,10 +120,13 @@ button:focus {
 .page-wrap {
     display: flex;
     justify-content: center;
+    min-height: 100vh;
 }
 
 .page-content {
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
     max-width: 40rem;
     padding: 0.5rem 0.5rem;
 }
@@ -127,20 +139,29 @@ button:focus {
 }
 
 .container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
     padding: 0.5rem;
 }
 
+.container > .top {
+    display: flex;
+    gap: 2rem;
+}
+
 .chat {
-    background: var(--chat-background);
+    flex-grow: 1;
     padding-right: 0.5rem;
     border-radius: 0.3rem;
     border: 2px #000000 solid;
+    background: var(--chat-background);
 }
 .messages {
     display: flex;
     flex-direction: column;
+    height: auto;
     gap: 0.5rem;
-    height: 25em;
     padding: 0.5rem;
     overflow-y: scroll;
 }
@@ -153,15 +174,14 @@ button:focus {
 .message.mine {
     justify-content: flex-end;
 }
-
-.message.pending {
-    color: var(--pending-message);
+.message.server {
+    justify-content: center;
 }
 
 .message > .inner {
     display: inline-flex;
     flex-direction: column;
-    padding: 0.2rem;
+    padding: 0.25rem;
     border-radius: 0.5em;
     border-top-left-radius: 0.1em;
     max-width: 90%;
@@ -175,6 +195,20 @@ button:focus {
     color: var(--message-mine);
     background: var(--message-mine-background);
 }
+.message.server > .inner {
+    border-radius: 0.5em;
+    color: var(--message-server);
+    background: var(--message-server-background);
+}
+.message.pending > .inner {
+    color: var(--message-pending);
+    background: var(--message-pending-background);
+}
+
+.message.server .user {
+    padding-bottom: 0.1rem;
+    color: var(--message-server-user);
+}
 
 .message > .inner .sender {
     font-size: 0.9em;
@@ -183,6 +217,9 @@ button:focus {
 }
 .message.mine > .inner .sender {
     color: var(--message-mine-sender);
+}
+.message.pending > .inner .sender {
+    color: var(--message-pending-sender);
 }
 
 .container > .bottom {
@@ -201,6 +238,4 @@ button:focus {
     .send-message {
         flex-direction: column;
     }
-}
-    
 }
