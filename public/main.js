@@ -45,6 +45,7 @@ function MessageManager(socket) {
         appendMessage(message);
         message.element.classList.add('pending');
         message.pending = true;
+        ulMessages.scrollTop = ulMessages.scrollHeight;
     }
 
     function sendMessage(message) {
@@ -110,6 +111,13 @@ function MessageManager(socket) {
         const sender = document.createElement('span');
         sender.classList.add('sender');
         sender.appendChild(document.createTextNode(message.senderName));
+        if (messages.length) {
+            const lastMessage = messages[messages.length-1];
+            if (lastMessage.senderId === message.senderId) {
+                sender.style.display = 'none';
+            }
+        }
+
         inner.appendChild(sender);
 
         const text = document.createElement('span');
