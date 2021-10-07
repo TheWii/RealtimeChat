@@ -1,0 +1,389 @@
+:root {
+  --columbia-blue: #CDE8F4;
+  --aero: #74BFE7;
+  --carolina-blue: #2E9FDC;
+  --blue-sapphire: #156579;
+  --prussian-blue: #193050;
+  --gunmetal: #0B2432;
+  --azureish-white: #dbe9f4;
+  --bisque: #FFE0C2;
+  --white: #ffffff;
+  --ghost-white: #f8f8ff;
+  --white-smoke: #f5f5f5;
+  --platinum: #e5e4e2;
+  --light-gray: #cfd3d4;
+  --gray: #a3a3a3;
+  --black: #000000;
+  --scroll-track: #00000000;
+  --scroll-thumb: #adadad;
+  --scroll-thumb-hover: #9b9b9b;
+  --text: var(--black);
+  --text-contrast: var(--white);
+  --text-blue: var(--carolina-blue);
+  --text-dark-blue: var(--blue-sapphire);
+  --text-button: var(--carolina-blue);
+  --text-button-contrast: var(--white);
+  --text-message: var(--black);
+  --text-message-mine: var(--black);
+  --text-message-server: var(--black);
+  --text-nav-title: var(--prussian-blue);
+  --text-nav-anchor: var(--blue-sapphire);
+  --text-nav-anchor-dark: var(--ghost-white);
+  --outline-input: var(--light-gray);
+  --outline-input-dark: var(--gray);
+  --background: var(--columbia-blue);
+  --background-input: var(--ghost-white);
+  --background-nav: var(--aero);
+  --background-chat: var(--ghost-white);
+  --background-container: var(--white);
+  --background-message: var(--bisque);
+  --background-message-mine: var(--azureish-white);
+  --background-message-server: var(--platinum);
+}
+
+.gray {
+  color: var(--gray);
+}
+
+.blue {
+  color: var(--text-blue);
+}
+
+.dark-blue {
+  color: var(--text-dark-blue);
+}
+
+.small {
+  font-size: 0.9em;
+}
+
+.smaller {
+  font-size: 0.8em;
+}
+
+.smallest {
+  font-size: 0.7em;
+}
+
+.big {
+  font-size: 1.1em;
+}
+
+.bigger {
+  font-size: 1.2em;
+}
+
+.biggest {
+  font-size: 1.3em;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  font-size: 1.0rem;
+}
+
+body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--background);
+  font-family: sans-serif;
+}
+
+ul {
+  list-style: none;
+}
+
+input,
+input:focus,
+input:active {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1rem;
+  background: none;
+  overflow: visible;
+  border: none;
+  outline: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  background: none;
+  border: none;
+  outline: none;
+  color: inherit;
+  overflow: visible;
+}
+
+a, a:hover, a:focus, a:active {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 0.3rem 2rem;
+  background: var(--background-nav);
+}
+
+header > div,
+header nav > ul {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 1rem;
+}
+
+header .title {
+  font-size: 1.5rem;
+  text-align: center;
+  color: var(--text-nav-title);
+}
+
+header a {
+  color: var(--text-nav-anchor);
+  font-weight: 700;
+}
+
+header a:hover, header a:focus, header a:active {
+  color: var(--text-nav-anchor-dark);
+  text-decoration: underline;
+}
+
+input,
+input:focus,
+input:active {
+  font-size: 1rem;
+  padding: 0.25rem 0.5rem;
+  border: 0.02em var(--border-input) solid;
+  border-radius: 0.2em;
+  background: var(--background-input);
+}
+
+input::-webkit-input-placeholder {
+  color: var(--text);
+  opacity: 0.5;
+}
+
+input:-ms-input-placeholder {
+  color: var(--text);
+  opacity: 0.5;
+}
+
+input::-ms-input-placeholder {
+  color: var(--text);
+  opacity: 0.5;
+}
+
+input::placeholder {
+  color: var(--text);
+  opacity: 0.5;
+}
+
+button {
+  font-size: 1em;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.2rem;
+  color: var(--text-button);
+  padding: 0.25em;
+  border: 0.125em solid;
+  border-radius: 0.2em;
+  border-color: var(--text-button);
+}
+
+button:hover,
+button:active
+button:focus {
+  color: var(--text-button-contrast);
+  background: var(--text-button);
+}
+
+.page-wrap {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.page-content {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  max-width: 40rem;
+  padding: 0.5rem 0.5rem;
+}
+
+section {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 100%;
+}
+
+.container.box {
+  gap: 1rem;
+  padding: 1.5rem 2rem;
+  margin: 2rem 0;
+  max-width: 30em;
+  border-radius: 0.5rem;
+  background: var(--background-container);
+}
+
+.container.box > * {
+  text-align: center;
+}
+
+form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 0.5rem;
+}
+
+form .field {
+  position: relative;
+  font-size: 1rem;
+}
+
+form .field.input input {
+  font-size: 1rem;
+  display: block;
+  width: 100%;
+  padding: 0.6em 0.5em;
+  border: 0.0625em solid var(--outline-input);
+  background: var(--background-input);
+}
+
+form .field.input input:focus,
+form .field.input input:active {
+  border-color: var(--outline-input-dark);
+}
+
+form .field.input input::-webkit-input-placeholder {
+  color: var(--text);
+  opacity: 0.5;
+}
+
+form .field.input input:-ms-input-placeholder {
+  color: var(--text);
+  opacity: 0.5;
+}
+
+form .field.input input::-ms-input-placeholder {
+  color: var(--text);
+  opacity: 0.5;
+}
+
+form .field.input input::placeholder {
+  color: var(--text);
+  opacity: 0.5;
+}
+
+form .field.input input:valid {
+  padding-top: 1.0em;
+  padding-bottom: 0.2em;
+}
+
+form .field.input label {
+  font-size: 0.9em;
+  position: absolute;
+  bottom: 50%;
+  left: 0.6rem;
+  -webkit-transform: translateY(50%);
+          transform: translateY(50%);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+form .field.input input:valid ~ label {
+  font-size: 0.8rem;
+  -webkit-transform: translateY(-0.25em);
+          transform: translateY(-0.25em);
+}
+
+form .field.password .toggle {
+  position: absolute;
+  bottom: 50%;
+  right: 0.6em;
+  display: none;
+  font-size: 0.8rem;
+  color: var(--gray);
+  -webkit-transform: translateY(50%);
+          transform: translateY(50%);
+}
+
+form .field.password .toggle:hover,
+form .field.password .toggle:active,
+form .field.password .toggle:focus {
+  color: var(--gray-hover);
+  text-decoration: none;
+}
+
+form .field.password:hover .toggle,
+form .field.password:active .toggle,
+form .field.password:focus .toggle {
+  display: block;
+}

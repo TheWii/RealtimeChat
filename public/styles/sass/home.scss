@@ -1,0 +1,64 @@
+
+#home {
+
+    h2 {
+        font-size: 1.3rem;
+        text-align: center;
+        color: var(--text-dark-blue);
+        padding-bottom: 0.5rem;
+    }
+
+    .rooms {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        > li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            background: var(--background-container);
+            border-radius: 0.3em;
+
+            .join {
+                display: grid;
+                align-items: center;
+                color: var(--text-button);
+                font-weight: 700;
+                padding: 0.5rem 0.75rem;
+                border: 0.15em solid var(--text-button);
+                border-radius: 0.25em;
+
+            }
+            .join:hover {
+                background: var(--text-button);
+                color: var(--text-button-contrast);
+            }
+
+            .head {
+                display: block;
+                font-size: 1.2rem;
+                color: var(--text-blue);
+                margin-bottom: 0.4rem;
+
+                .type {
+                    font-size: 0.8em;
+                    color: var(--gray);
+                }
+            }
+
+            .details {
+                font-size: 0.9rem;
+                
+                .value {
+                    color: var(--gray);
+                }
+            }
+
+            .id {
+                color: var(--gray);
+            }
+        }
+    }
+}

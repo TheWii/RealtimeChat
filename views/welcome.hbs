@@ -1,0 +1,26 @@
+<section id="welcome">
+
+    <div class="container box">
+
+        <h1 class="blue">Welcome, Stranger</h1>
+
+        <div>
+            <p>
+                How should we call you?
+            </p>
+            <p class="gray small">
+                (This name will be displayed to other users)
+            </p>
+        </div>
+
+        <form id="form-join" action="/user/name" method="post">
+            <div class="name input field">
+                <input type="text" name="name" id ="form-name"  autocomplete="name" required>
+                <label for="form-name">Nickname</label>
+            </div>
+            <button type="submit">Continue</button>
+        </form>
+
+    </div>
+
+</section>

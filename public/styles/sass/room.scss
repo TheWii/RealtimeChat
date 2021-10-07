@@ -1,0 +1,226 @@
+
+#room {
+
+::-webkit-scrollbar {
+    width: 0.625rem;
+  }
+
+::-webkit-scrollbar-track {
+    background: var(--scroll-track);
+    border-radius: 0.3em;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--scroll-thumb);
+    border-radius: 0.3em;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--scroll-thumb-hover);
+}
+
+
+/*----------------------------------------------------------------------*/
+
+
+
+/*----------------------------------------------------------------------*/
+
+
+.container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+
+    > .name {
+        color: var(--text-blue);
+        font-size: 1.3em;
+        text-align: center;
+    }
+
+    > .top {
+        display: flex;
+        gap: 1rem;
+        padding: 0.2em;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    > .bottom {
+        padding-top: 0.5rem;
+    }
+    
+    .send-message {
+        display: flex;
+        flex-direction: row;
+        gap: 0.25rem;
+
+        input {
+            background: var(--background-chat);
+            flex-grow: 1;
+        }
+
+        button.send {
+            padding: 0.25rem 1rem;
+        }
+    }
+    
+}
+
+
+
+
+/*----------------------------------------------------------------------*/
+
+.chat-container {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    border: 0.02em solid var(--border-chat);
+    border-radius: 0.25em;
+    background: var(--background-chat);
+
+    .chat {
+        flex-grow: 1;
+        padding-right: 0.5rem;
+        border-radius: 0.3rem;
+        
+    }
+
+    .info {
+        color: var(--gray);
+        padding: 0.25rem 0.5rem;
+        min-height: 1.75rem;
+        overflow: hidden;
+    }
+}
+
+
+.messages {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    overflow-y: scroll;
+}
+
+
+/*----------------------------------------------------------------------*/
+
+
+.message {
+    display: flex;
+    position: relative;
+    font-size: 1rem;
+
+    > .inner {
+        position: relative;
+        display: inline-flex;
+        flex-direction: column;
+        max-width: 90%;
+        padding: 0.4rem;
+        border-radius: 0.5em;
+        background: var(--background-message);
+        color: var(--text-message);
+        
+        * {
+            z-index: 2;
+        }
+
+        .sender {
+            font-size: 0.9em;
+            padding-bottom: 0.1rem;
+            color: var(--text-message);
+            opacity: 0.9;
+        }
+        
+        .body {
+            position: relative;
+            display: inline;
+        }
+        
+        .time {
+            font-size: 0.75em;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            opacity: 0.75;
+        }
+    }
+}
+.message.mine {
+    justify-content: flex-end;
+    
+    > .inner {
+        border-color: var(--border-message-mine);
+        color: var(--text-message-mine);
+        background: var(--background-message-mine);
+    }
+}
+.message.server {
+    justify-content: center;
+    
+    > .inner {
+        padding: 0.3rem 0.5rem;
+        color: var(--text-message-server);
+        background: var(--background-message-server);
+    }
+
+    .user {
+        padding-bottom: 0.1rem;
+        color: var(--text-message-server-user);
+    }
+    
+}
+.message.pending {
+    > .inner {
+        opacity: 0.5;
+    }
+}
+.message:not(.server) > .inner .text {
+    word-wrap:break-word;
+    padding-inline-end: 3em;
+}
+
+
+.message.successive .sender {
+    display: none;
+}
+.message:not(.successive):not(.server) > .inner::after {
+    z-index: 1;
+    position: absolute;
+    left: -0.5em;
+    top: 0;
+    content: '';
+    font-size: 1em;
+    width: 1em;
+    height: 1em;
+    background: var(--background-message);
+    border-top-left-radius: 30%;
+    transform: translate(0.25em, -0.25em) skewX(45deg) scaleY(0.5);
+}
+.message.mine:not(.successive) > .inner::after {
+    right: none;
+    left: calc(100% - 0.5em);
+    background: var(--background-message-mine);
+    border-radius: 0;
+    border-top-right-radius: 30%;
+    transform: translate(-0.25em, -0.25em) skewX(-45deg) scaleY(0.5);
+}
+
+}
+
+@media screen and (max-width: 500px) {
+    #room {
+        .container {
+            > .top {
+                flex-direction: column;
+                gap: 0.2em;
+            }
+
+            .send-message {
+                flex-direction: column;
+            }
+        }
+    }
+}

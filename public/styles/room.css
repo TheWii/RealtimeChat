@@ -1,0 +1,261 @@
+#room {
+  /*----------------------------------------------------------------------*/
+  /*----------------------------------------------------------------------*/
+  /*----------------------------------------------------------------------*/
+  /*----------------------------------------------------------------------*/
+}
+
+#room ::-webkit-scrollbar {
+  width: 0.625rem;
+}
+
+#room ::-webkit-scrollbar-track {
+  background: var(--scroll-track);
+  border-radius: 0.3em;
+}
+
+#room ::-webkit-scrollbar-thumb {
+  background: var(--scroll-thumb);
+  border-radius: 0.3em;
+}
+
+#room ::-webkit-scrollbar-thumb:hover {
+  background: var(--scroll-thumb-hover);
+}
+
+#room .container {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  padding: 0.5rem;
+}
+
+#room .container > .name {
+  color: var(--text-blue);
+  font-size: 1.3em;
+  text-align: center;
+}
+
+#room .container > .top {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 1rem;
+  padding: 0.2em;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#room .container > .bottom {
+  padding-top: 0.5rem;
+}
+
+#room .container .send-message {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  gap: 0.25rem;
+}
+
+#room .container .send-message input {
+  background: var(--background-chat);
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+}
+
+#room .container .send-message button.send {
+  padding: 0.25rem 1rem;
+}
+
+#room .chat-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  border: 0.02em solid var(--border-chat);
+  border-radius: 0.25em;
+  background: var(--background-chat);
+}
+
+#room .chat-container .chat {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  padding-right: 0.5rem;
+  border-radius: 0.3rem;
+}
+
+#room .chat-container .info {
+  color: var(--gray);
+  padding: 0.25rem 0.5rem;
+  min-height: 1.75rem;
+  overflow: hidden;
+}
+
+#room .messages {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: auto;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  overflow-y: scroll;
+}
+
+#room .message {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  font-size: 1rem;
+}
+
+#room .message > .inner {
+  position: relative;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  max-width: 90%;
+  padding: 0.4rem;
+  border-radius: 0.5em;
+  background: var(--background-message);
+  color: var(--text-message);
+}
+
+#room .message > .inner * {
+  z-index: 2;
+}
+
+#room .message > .inner .sender {
+  font-size: 0.9em;
+  padding-bottom: 0.1rem;
+  color: var(--text-message);
+  opacity: 0.9;
+}
+
+#room .message > .inner .body {
+  position: relative;
+  display: inline;
+}
+
+#room .message > .inner .time {
+  font-size: 0.75em;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  opacity: 0.75;
+}
+
+#room .message.mine {
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
+#room .message.mine > .inner {
+  border-color: var(--border-message-mine);
+  color: var(--text-message-mine);
+  background: var(--background-message-mine);
+}
+
+#room .message.server {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+#room .message.server > .inner {
+  padding: 0.3rem 0.5rem;
+  color: var(--text-message-server);
+  background: var(--background-message-server);
+}
+
+#room .message.server .user {
+  padding-bottom: 0.1rem;
+  color: var(--text-message-server-user);
+}
+
+#room .message.pending > .inner {
+  opacity: 0.5;
+}
+
+#room .message:not(.server) > .inner .text {
+  word-wrap: break-word;
+  -webkit-padding-end: 3em;
+          padding-inline-end: 3em;
+}
+
+#room .message.successive .sender {
+  display: none;
+}
+
+#room .message:not(.successive):not(.server) > .inner::after {
+  z-index: 1;
+  position: absolute;
+  left: -0.5em;
+  top: 0;
+  content: '';
+  font-size: 1em;
+  width: 1em;
+  height: 1em;
+  background: var(--background-message);
+  border-top-left-radius: 30%;
+  -webkit-transform: translate(0.25em, -0.25em) skewX(45deg) scaleY(0.5);
+          transform: translate(0.25em, -0.25em) skewX(45deg) scaleY(0.5);
+}
+
+#room .message.mine:not(.successive) > .inner::after {
+  right: none;
+  left: calc(100% - 0.5em);
+  background: var(--background-message-mine);
+  border-radius: 0;
+  border-top-right-radius: 30%;
+  -webkit-transform: translate(-0.25em, -0.25em) skewX(-45deg) scaleY(0.5);
+          transform: translate(-0.25em, -0.25em) skewX(-45deg) scaleY(0.5);
+}
+
+@media screen and (max-width: 500px) {
+  #room .container > .top {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    gap: 0.2em;
+  }
+  #room .container .send-message {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+}

@@ -1,0 +1,74 @@
+#home h2 {
+  font-size: 1.3rem;
+  text-align: center;
+  color: var(--text-dark-blue);
+  padding-bottom: 0.5rem;
+}
+
+#home .rooms {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 0.5rem;
+}
+
+#home .rooms > li {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 0.5rem;
+  background: var(--background-container);
+  border-radius: 0.3em;
+}
+
+#home .rooms > li .join {
+  display: -ms-grid;
+  display: grid;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  color: var(--text-button);
+  font-weight: 700;
+  padding: 0.5rem 0.75rem;
+  border: 0.15em solid var(--text-button);
+  border-radius: 0.25em;
+}
+
+#home .rooms > li .join:hover {
+  background: var(--text-button);
+  color: var(--text-button-contrast);
+}
+
+#home .rooms > li .head {
+  display: block;
+  font-size: 1.2rem;
+  color: var(--text-blue);
+  margin-bottom: 0.4rem;
+}
+
+#home .rooms > li .head .type {
+  font-size: 0.8em;
+  color: var(--gray);
+}
+
+#home .rooms > li .details {
+  font-size: 0.9rem;
+}
+
+#home .rooms > li .details .value {
+  color: var(--gray);
+}
+
+#home .rooms > li .id {
+  color: var(--gray);
+}
