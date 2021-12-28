@@ -1,0 +1,46 @@
+.field {
+    position: relative;
+}
+
+input {
+    font-size: 1rem;
+    display: block;
+    width: 100%;
+    padding: 1em 0.7em;
+    height: 3.2em;
+    border: 0.0625em solid var(--outline-input);
+    border-radius: 0.1em;
+    background: var(--background-input);
+    transition: 0.05s ease-out;
+    transition-property: padding;
+
+    &:focus,
+    &:active {
+        border-color: var(--outline-input-dark);
+    }
+
+    &::placeholder {
+        color: var(--text);
+        opacity: 0.5;
+    }  
+
+    &:valid {
+        padding-top: 1.6em;
+        padding-bottom: 0.4em;
+    }
+}
+
+label {
+    font-size: 0.9em;
+    position: absolute;
+    bottom: 50%;
+    left: 0.75rem;
+    transform: translateY(50%);
+    opacity: 0.5;
+    pointer-events: none;
+    transition: 0.05s ease-out;
+    transition-property: transform;
+}
+input:valid ~ label {
+    transform: translateY(-0.2em);
+}

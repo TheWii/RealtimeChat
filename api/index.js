@@ -43,7 +43,6 @@ messenger.addRoom('private', {
     password: 'chocolate123'
 });
 
-
 connection.subscribe('received-message', (data) =>
     messenger.appendMessage(data.roomId, data.message)
 );
@@ -68,19 +67,22 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(multer().array());
-app.use(express.static('public'));
+// REPLACED BY STATIC FILES IN APP/BUILD
+//app.use(express.static('public'));
+//
+// TODO: NEEDS REFACTORING
+//app.use('/rooms', RoomRouter(messenger));
+//app.use('/user', UserRouter());
+//
+//app.get('/', requireCookie('name', validation.username, (req, res) => {
+//    res.render('welcome');
+//}), (req, res) => {
+//    res.redirect('/rooms');
+//});
 
-app.use('/rooms', RoomRouter(messenger));
-app.use('/user', UserRouter());
-
-
-app.get('/', requireCookie('name', validation.username, (req, res) => {
-    res.render('welcome');
-}), (req, res) => {
-    res.redirect('/rooms');
-});
+app.use(express.static('../app/build'));
 
 
 server.listen(port, () => {
-    console.log(`Server -> Listening on port: ${port}.`);
+    console.log(`Server -> Listening on localhost:${port}.`);
 })

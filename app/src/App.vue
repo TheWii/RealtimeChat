@@ -3,10 +3,15 @@
 </template>
 
 <script>
+import { io } from 'socket.io-client';
 export default {
-  name: 'App'
+  name: 'App',
+  mounted() {
+    this.io = io();
+  }
 }
 </script>
 
 <style lang="scss">
+@import './styles/main.scss';
 </style>
