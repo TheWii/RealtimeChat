@@ -1,0 +1,54 @@
+
+:root {
+    --columbia-blue: #CDE8F4;
+    --aero: #74BFE7;
+    --carolina-blue: #2E9FDC;
+    --blue-sapphire: #156579;
+    --prussian-blue: #193050;
+    --gunmetal: #0B2432;
+
+    --azureish-white: #dbe9f4;
+    --bisque: #FFE0C2;
+
+    --white: #ffffff;
+    --ghost-white: #f8f8ff;
+    --white-smoke: #f5f5f5;
+    --platinum: #e5e4e2;
+    --light-gray: #cfd3d4;
+    --gray: #a3a3a3;
+    --black: #000000;
+
+    --scroll-track: #00000000;
+    --scroll-thumb: #adadad;
+    --scroll-thumb-hover: #9b9b9b;
+
+    --text: var(--black);
+    --text-contrast: var(--white);
+    --text-blue: var(--carolina-blue);
+    --text-dark-blue: var(--blue-sapphire);
+
+    --text-button: var(--carolina-blue);
+
+    --text-button-contrast: var(--white);
+
+    --text-message: var(--black);
+    --text-message-mine: var(--black);
+    --text-message-server: var(--black);
+
+    --text-nav-title: var(--prussian-blue);
+    --text-nav-anchor: var(--blue-sapphire);
+    --text-nav-anchor-dark: var(--ghost-white);
+        
+    --outline-input: var(--light-gray);
+    --outline-input-dark: var(--gray);
+
+    --background: var(--columbia-blue);
+    --background-input: var(--ghost-white);
+    --background-nav: var(--aero);
+    --background-chat: var(--ghost-white);
+    --background-container: var(--white);
+
+    --background-message: var(--bisque);
+    --background-message-mine: var(--azureish-white);
+    --background-message-server: var(--platinum);
+}  
