@@ -9,18 +9,18 @@ export function Connection(io) {
     const bus = EventBus();
 
     // parse cookies middleware
-    io.use(function(socket, next) {
-        const cookies = cookie.parse(socket.handshake.headers.cookie);
-        socket.cookies = cookies;
-        next();
-    });
-
+    //io.use(function(socket, next) {
+    //    const cookies = cookie.parse(socket.handshake.headers.cookie);
+    //    socket.cookies = cookies;
+    //    next();
+    //});
+    //
     // decode room token middleware
-    io.use(function(socket, next) {
-        const token = jwt.verify(socket.cookies['room'], process.env.TOKEN_SECRET);
-        socket.roomId = token.id;
-        next();
-    });
+    //io.use(function(socket, next) {
+    //    const token = jwt.verify(socket.cookies['room'], process.env.TOKEN_SECRET);
+    //    socket.roomId = token.id;
+    //    next();
+    //});
 
 
     io.on('connection', connection);
