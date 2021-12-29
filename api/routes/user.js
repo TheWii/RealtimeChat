@@ -1,5 +1,6 @@
 
 import express from 'express';
+import * as validation from '../validation/user.js';
 
 export default UserRouter;
 
@@ -7,15 +8,18 @@ export function UserRouter() {
     const router = express.Router();
 
     router.post('/name', (req, res) => {
-        console.log(`UserRouter -> Set user name request.`);
+        console.log(`[UserRouter] POST name -> Setting user name.`);
         const name = req.body.name;
-        if (!name) return res.status(400).send('Name field is empty.');
-        if (name.length < 3) return res.status(400).send('Name must have at least 3 characters.');
-        res.cookie('name', name, {
-            secure: !process.env.DEV_ENV,
-            httpOnly: true
+        const { error, value } = validation.username(name);
+        if (error) {
+            const message = error.details[0].message;
+            console.log(`[UserRouter] POST name -> Request rejected: ${message}`);
+            return res.status(400).send(message);
+        }
+        res.cookie('name', value, {
+            secure: !process.env.DEV_ENV
         });
-        res.redirect('/');
+        res.json({ name: value });
     });
 
     router.get('/leave', (req, res) => {

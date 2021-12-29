@@ -1,9 +1,9 @@
-
-export default {
-    username
-};
+import Joi from 'joi';
 
 export function username(name) {
-    if (typeof name !== 'string') return false;
-    return (name.length >= 3);
+    const schema = Joi.string()
+        .label('Nickname')
+        .min(3)
+        .max(20);
+        return schema.validate(name);
 }

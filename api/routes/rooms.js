@@ -3,7 +3,7 @@ import express from 'express';
 import jwt from 'jsonwebtoken';
 
 import { requireCookie } from '../lib/router-utils.js';
-import validation from '../validation/user.js';
+import * as validation from '../validation/user.js';
 
 export default RoomRouter;
 
@@ -11,7 +11,7 @@ export function RoomRouter(messenger) {
     const router = express.Router();
 
     // user must have a name to use this router.
-    router.use(requireCookie('name', validation.username,
+    router.use(requireCookie('name', (name) => !validation.username(name).error,
         (req, res) => res.redirect('/')
     ));
 

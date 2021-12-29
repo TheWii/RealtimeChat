@@ -1,6 +1,6 @@
 
 import EventBus from '../lib/events.js';
-import validation from '../validation/user.js';
+import * as validation from '../validation/user.js';
 
 export default Messenger;
 
@@ -86,7 +86,7 @@ export function Messenger() {
     }
 
     function renameUser(user, name) {
-        if (!validation.username(name)) return;
+        if (validation.username(name).error) return;
         name = name.trim().slice(0, 19);
         const previousName = user.name;
         user.name = name;
