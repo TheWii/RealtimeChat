@@ -1,13 +1,18 @@
 <template>
-<router-view></router-view>
+<router-view
+  :io="io"
+></router-view>
 </template>
 
 <script>
-import { io } from 'socket.io-client';
+import Connection from './services/connection.js';
 export default {
   name: 'App',
+  data() { return {
+    io: null
+  }},
   mounted() {
-    this.io = io();
+    this.io = Connection();
   }
 }
 </script>
