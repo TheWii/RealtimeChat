@@ -5,6 +5,7 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import dotenv from 'dotenv';
 
+import historyApiFallback from 'connect-history-api-fallback';
 //import cookieParser from 'cookie-parser';
 //import multer from 'multer';
 
@@ -27,6 +28,7 @@ app.use(express.json());
 
 app.use('/api', ApiRouter(services));
 
+app.use(historyApiFallback());
 app.use(express.static('../app/build'));
 
 server.listen(port, () => {

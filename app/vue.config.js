@@ -1,5 +1,7 @@
+
 module.exports = {
     outputDir: 'build',
+    publicPath: '/',
     devServer: {
         proxy: {
             '^/socket.io': {
