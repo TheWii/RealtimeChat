@@ -13,7 +13,7 @@
     --azureish-white: #dbe9f4;
     --bisque: #FFE0C2;
 
-    --white: #ffffff;
+    --white: #ffffff;    
     --ghost-white: #fafafa;
     --white-smoke: #f5f5f5;
     --platinum: #e5e4e2;
@@ -37,18 +37,18 @@
     --text-message: var(--black);
     --text-message-mine: var(--black);
     --text-message-server: var(--black);
+    
+    --nav-title: var(--black);
+    --nav-background: var(--white);
+    --nav-background-hover: #f3f3f3;
+    --nav-background-active: #d3d3d3;
 
-    --text-nav-title: var(--black);
-    --text-nav-anchor: var(--blue-sapphire);
-    --text-nav-anchor-dark: var(--ghost-white);
-        
     --outline-input: var(--light-gray);
     --outline-input-dark: var(--gray);
     --outline-container: var(--light-grayish-blue);
 
     --background: var(--alice-blue);
     --background-input: var(--ghost-white);
-    --background-nav: var(--white);
     --background-chat: var(--ghost-white);
     --background-container: var(--white);
 

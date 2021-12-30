@@ -4,6 +4,8 @@
         <h1 class="title">Realtime Chat</h1>
         <nav>
             <ul>
+                <slot>
+                </slot>
             </ul>
         </nav>
     </div>
@@ -18,7 +20,7 @@ export default {
 
 <style lang="scss" scoped>
 header {
-    background: var(--background-nav);
+    background: var(--nav-background);
     box-shadow: 0 0 0.75rem rgba(0, 0, 0, 0.075);
 
     .content {
@@ -33,7 +35,19 @@ header {
 
     .title {
         font-size: 1.5rem;
-        color: var(--text-nav-title);
+        color: var(--nav-title);
+    }
+
+    nav > ul {
+        display: flex;
+        height: 3.75rem;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    header > .content {
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
 }
 </style>

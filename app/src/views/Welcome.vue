@@ -64,7 +64,7 @@ export default {
 main {
     margin: 3rem auto;
     max-width: 32em;
-    padding: 0 1rem;
+    padding: 0 2rem;
 }
 
 .error {
@@ -79,8 +79,7 @@ form {
 
 @media screen and (max-width: 500px) {
   main {
-    padding-left: 0;
-    padding-right: 0;
+    padding: 0;
   }
 
   .container.box {
