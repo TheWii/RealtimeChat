@@ -1,18 +1,12 @@
 <template>
 <header>
-    <div>
+    <div class="content">
         <h1 class="title">Realtime Chat</h1>
-        <div>
-            <p>Hello, (user.name)!</p>
-        </div>
+        <nav>
+            <ul>
+            </ul>
+        </nav>
     </div>
-
-    <nav>
-        <ul>
-            <li><router-link to="/rooms">HOME</router-link></li>
-            <li><router-link to="/user/leave">LEAVE</router-link></li>
-        </ul>
-    </nav>
 </header>
 </template>
 
@@ -24,32 +18,22 @@ export default {
 
 <style lang="scss" scoped>
 header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.3rem 2rem;
     background: var(--background-nav);
+    box-shadow: 0 0 0.75rem rgba(0, 0, 0, 0.075);
 
-    > div,
-    nav > ul {
+    .content {
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        gap: 1rem;
+        padding: 0 2rem;
+        margin: 0 auto;
+        height: 3.75rem;
+        max-width: 70em;
     }
 
     .title {
         font-size: 1.5rem;
-        text-align: center;
         color: var(--text-nav-title);
-    }
-
-    a {
-        color: var(--text-nav-anchor);
-        font-weight: 700;
-    }
-    a:hover, a:focus, a:active {
-        color: var(--text-nav-anchor-dark);
-        text-decoration: underline;
     }
 }
 </style>

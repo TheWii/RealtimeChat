@@ -1,17 +1,20 @@
 
 :root {
+    --light-grayish-blue: #cdd5d9;
+    --alice-blue: #F4FAFF;
     --columbia-blue: #CDE8F4;
     --aero: #74BFE7;
     --carolina-blue: #2E9FDC;
     --blue-sapphire: #156579;
     --prussian-blue: #193050;
     --gunmetal: #0B2432;
+    --red: #FF8080;
 
     --azureish-white: #dbe9f4;
     --bisque: #FFE0C2;
 
     --white: #ffffff;
-    --ghost-white: #f8f8ff;
+    --ghost-white: #fafafa;
     --white-smoke: #f5f5f5;
     --platinum: #e5e4e2;
     --light-gray: #cfd3d4;
@@ -35,16 +38,17 @@
     --text-message-mine: var(--black);
     --text-message-server: var(--black);
 
-    --text-nav-title: var(--prussian-blue);
+    --text-nav-title: var(--black);
     --text-nav-anchor: var(--blue-sapphire);
     --text-nav-anchor-dark: var(--ghost-white);
         
     --outline-input: var(--light-gray);
     --outline-input-dark: var(--gray);
+    --outline-container: var(--light-grayish-blue);
 
-    --background: var(--columbia-blue);
+    --background: var(--alice-blue);
     --background-input: var(--ghost-white);
-    --background-nav: var(--aero);
+    --background-nav: var(--white);
     --background-chat: var(--ghost-white);
     --background-container: var(--white);
 
