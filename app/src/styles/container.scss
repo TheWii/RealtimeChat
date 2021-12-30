@@ -1,0 +1,18 @@
+
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.container.box {
+    gap: 1rem;
+    padding: 2rem 3rem;
+    border-radius: 0.25rem;
+    box-shadow: 0 0 0.75rem rgba(0, 0, 0, 0.075);
+    background: var(--background-container);
+}
+
+.container.box > * {
+    text-align: center;
+}
