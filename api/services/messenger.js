@@ -22,9 +22,12 @@ export function Messenger() {
     function addRoom(id, options={}) {
         if (rooms[id]) return; // a room already uses this id
         rooms[id] = {
+            name: 'Unnamed',
+            isPrivate: false,
+            password: null,
+            limit: 10,
             users: {},
             messages: [],
-            name: 'Unnamed',
             ...options
         };
         bus.publish('added-room', {

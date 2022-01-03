@@ -7,13 +7,17 @@ export default Services;
 export function Services(sockets) {
     const messenger = Messenger();
     const connection = Connection(sockets);
-
-    //messenger.addRoom('public', { name: 'Community Center' });
-    //messenger.addRoom('private', {
-    //    name: 'Secret Club',
-    //    private: true,
-    //    password: 'chocolate123'
-    //});
+        
+    messenger.addRoom('mainhall', {
+        name: 'Main Hall',
+        limit: 25
+    });
+    messenger.addRoom('viparea', {
+        name: 'VIP Area',
+        isPrivate: true,
+        password: '12345678',
+        limit: 10
+    });
     //
     //connection.subscribe('received-message', (data) =>
     //    messenger.appendMessage(data.roomId, data.message)

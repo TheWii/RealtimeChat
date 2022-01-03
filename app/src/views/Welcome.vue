@@ -62,9 +62,7 @@ export default {
 <style lang="scss" scoped>
 @import '../styles/container.scss';
 main {
-    margin: 3rem auto;
     max-width: 32em;
-    padding: 0 2rem;
 }
 
 .error {

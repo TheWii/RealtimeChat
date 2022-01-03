@@ -11,9 +11,9 @@ export function RoomRouter(messenger) {
     const router = express.Router();
 
     // user must have a name to use this router.
-    router.use(requireCookie('name', (name) => !validation.username(name).error,
-        (req, res) => res.redirect('/')
-    ));
+    //router.use(requireCookie('name', (name) => !validation.username(name).error,
+    //    (req, res) => res.redirect('/')
+    //));
 
 
     function decodeToken(token) {
@@ -59,17 +59,17 @@ export function RoomRouter(messenger) {
 
 
     router.get('/', (req, res) => {
-        console.log('MainRouter -> Home route.');
-        res.clearCookie('room');
-        let rooms = Object.entries(messenger.rooms).map(
-            (x) => ({id: x[0], ...x[1]})
+        console.log('RoomRouter -> GET. Retrieving rooms.');
+        const rooms = Object.entries(messenger.rooms)
+            .map(kv => ({
+                id: kv[0],
+                name: kv[1].name,
+                isPrivate: kv[1].isPrivate,
+                users: Object.keys(kv[1].users).length,
+                limit: kv[1].limit
+            })
         );
-        res.render('home', {
-            rooms,
-            user: {
-                name: req.cookies.name
-            }
-        });
+        res.json(rooms);
     });
 
     router.get('/:id', (req, res) => {
