@@ -1,27 +1,24 @@
 
 import EventBus from '../lib/events.js';
 import cookie from 'cookie';
-import jwt from 'jsonwebtoken';
 
-export default Connection;
+import RoomHandler from './connection/room.js';
 
-export function Connection(io) {
+export default function Connection(io) {
     const bus = EventBus();
+    const handlers = {
+        room: RoomHandler(io, bus)
+    };
 
     // parse cookies middleware
     //io.use(function(socket, next) {
-    //    const cookies = cookie.parse(socket.handshake.headers.cookie);
-    //    socket.cookies = cookies;
+    //    socket.cookies = {};
+    //    const headers = socket.handshake.headers;
+    //    if ('cookie' in headers) {
+    //        socket.cookies = cookie.parse(headers.cookie);
+    //    }
     //    next();
     //});
-    //
-    // decode room token middleware
-    //io.use(function(socket, next) {
-    //    const token = jwt.verify(socket.cookies['room'], process.env.TOKEN_SECRET);
-    //    socket.roomId = token.id;
-    //    next();
-    //});
-
 
     io.on('connection', connection);
     function connection(user) {
@@ -31,23 +28,27 @@ export function Connection(io) {
     }
 
     function setupUser(user) {
-        user.on('disconnect',
-            () => disconnection(user)
-        );
-        user.on('send-message',
-            (message, callback) => receivedMessage(user, message, callback)
-        );
-        user.on('change-name',
-            (request) => bus.publish('user-name-request', { user, ...request })
-        );
-        user.on('started-typing', () => userStartedTyping(user));
-        user.on('stopped-typing', () => userStoppedTyping(user));
+        for (let [name, handler] of Object.entries(handlers)) {
+            const binded = handler.bind(user);
+            for (let event in binded) {
+                console.log(`Registering a listener on event #${name}:${event}.`);
+                user.on(`${name}:${event}`, binded[event]);
+            }
+        }
+        user.on('disconnect', disconnected.bind(null, user));
+        //user.on('send-message', receivedMessage.bind(null, user));
+        //user.on('started-typing', userStartedTyping.bind(null, user));
+        //user.on('stopped-typing', userStoppedTyping.bind(null, user));
+        //user.on('change-name',
+        //    (request) => bus.publish('user-name-request', { user, ...request })
+        //);
     }
 
-    function disconnection(user) {
+    function disconnected(user) {
         console.log(`Connection -> User disconnected (id: ${user.id}).`);
-        bus.publish('user-disconnection', { user });
-    }    
+        bus.publish('user:disconnected', { user });
+    }
+    /*  
 
 
     function receivedMessage(user, message, callback) {
@@ -121,14 +122,11 @@ export function Connection(io) {
     function sendToRoom(roomId, event, ...args) {
         io.in(`room:${roomId}`).emit(event, ...args);
     }
+    */
     
     return {
+        ...handlers,
         subscribe: bus.subscribe,
-        unsubscribe: bus.unsubscribe,
-        userJoinedRoom,
-        userLeftRoom,
-        receivedMessage,
-        broadcastMessage,
-        sendUserName
+        unsubscribe: bus.unsubscribe
     }
 }

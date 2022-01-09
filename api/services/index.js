@@ -18,6 +18,14 @@ export function Services(sockets) {
         password: '12345678',
         limit: 10
     });
+
+    connection.subscribe('room:join', messenger.joinRoom);
+    messenger.subscribe('room:joined', connection.room.joined);
+    connection.subscribe('room:leave', messenger.leaveRoom);
+    connection.subscribe('user:disconnected', messenger.leaveRoom);
+    messenger.subscribe('room:left', connection.room.left);
+    
+
     //
     //connection.subscribe('received-message', (data) =>
     //    messenger.appendMessage(data.roomId, data.message)

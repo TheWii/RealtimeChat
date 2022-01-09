@@ -6,7 +6,7 @@ import { Server } from 'socket.io';
 import dotenv from 'dotenv';
 
 import historyApiFallback from 'connect-history-api-fallback';
-//import cookieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser';
 //import multer from 'multer';
 
 import Services from './services/index.js';
@@ -21,7 +21,7 @@ const port = 3000;
 
 const services = Services(sockets);
 
-//app.use(cookieParser());
+app.use(cookieParser());
 app.use(express.json());
 //app.use(express.urlencoded({extended: true}));
 //app.use(multer().array());

@@ -9,7 +9,7 @@ export function ApiRouter(services) {
     const router = express.Router();
 
     router.use('/user', UserRouter());
-    router.use('/rooms', RoomRouter(services.messenger));
+    router.use('/rooms', RoomRouter(services));
 
     return router;
 }

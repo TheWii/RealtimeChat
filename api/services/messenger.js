@@ -14,23 +14,22 @@ export function Messenger() {
         return currentId++;
     }
 
-    function generateName() {
-        return 'Guest' + Math.floor(Math.random()*1000);
-    }
-
-
     function addRoom(id, options={}) {
         if (rooms[id]) return; // a room already uses this id
         rooms[id] = {
+            id,
             name: 'Unnamed',
             isPrivate: false,
             password: null,
             limit: 10,
             users: {},
             messages: [],
+            get userAmount() {
+                return Object.keys(this.users).length;
+            },
             ...options
         };
-        bus.publish('added-room', {
+        bus.publish('room:added', {
             id,
             room: rooms[id]
         });
@@ -42,37 +41,81 @@ export function Messenger() {
         delete rooms[id];
         bus.publish('removed-room', { id, room });
     }
-    
 
-    function joinRoom(roomId, user) {
+    /**
+     * Check if the user `user` can join room of id `roomId`.
+     * @param {{
+     *  roomId: string,
+     *  password?: string,
+     *  user?: Socket,
+     *  verifyPassword?: boolean
+     * }} cmd An object containing the following properties:
+     * @param {Object} cmd.password Required password to join
+     *  the room in case the room is private.
+     * @param {Object} cmd.user The Socket object that represents
+     *  the user who desires to join the room. Although it's
+     *  not required, it's preferable to get passed since in
+     *  some cases the room might need to blacklist users.
+     * @param {Object} cmd.verifyPassword Whether the password
+     *  should
+     */
+    function canJoin(cmd) {
+        const { roomId, password, verifyPassword=true } = cmd;
         const room = rooms[roomId];
-        if (!room) return;
-        room.users[user.id] = user;
-        console.log(`Messenger -> User joined room #${roomId}.`);
-        if (!user.name) renameUser(user, generateName());
-        bus.publish('user-joined', {
-            roomId,
-            user,
-            userAmount: Object.keys(room.users).length
-        });
+        if (!room) return {
+            status: 404, msg: "Room with specified id doesn't exist."
+        }
+        if (room.isPrivate && verifyPassword) {
+            if (!password) return {
+                status: 401, msg: "Password is required."
+            }
+            if (room.password !== password) return {
+                status: 401, msg: "Password is incorrect."
+            }
+        }
+        if (room.userAmount >= room.limit) return {
+            status: 400, msg: "Room is full."
+        }
+        return {
+            status: 200,
+            msg: "Allowed to join room.",
+        };
     }
-    
-    function leaveRoom(roomId, user) {
+
+    /**
+     * @param {{
+     *  roomId: string,
+     *  user: Socket,
+     *  password?: string
+     * }} cmd
+     */
+    function joinRoom(cmd) {
+        const { roomId, user } = cmd;
+        const { status, msg } = canJoin({...cmd, verifyPassword: false});
+        //console.log(`Messenger -> ${status}: ${msg}`);
+        if (status !== 200) return;
         const room = rooms[roomId];
+        room.users[user.id] = user;
+        user.roomId = room.id;
+        console.log(`Messenger -> User joined room #${roomId}.`);
+        bus.publish('room:joined', { room, user });
+    }
+
+    /**
+     * @param {{
+     *  user: Socket
+     * }} cmd 
+     * @returns 
+     */
+    function leaveRoom(cmd) {
+        const { user } = cmd;
+        if (!user.roomId) return;
+        const room = rooms[user.roomId];
         if (!room) return;
         delete room.users[user.id];
-        console.log(`Messenger -> User left room #${roomId}.`);
-        bus.publish('user-left', {
-            roomId,
-            user,
-            userAmount: Object.keys(room.users).length
-        });
-    }
-
-    function getUser(id) {
-        for (let room in rooms) {
-            if (room[id]) return room[id];
-        }
+        delete user.roomId;
+        console.log(`Messenger -> User left room #${room.id}.`);
+        bus.publish('room:left', { room, user });
     }
 
     function appendMessage(roomId, message) {
@@ -107,10 +150,8 @@ export function Messenger() {
         unsubscribe: bus.unsubscribe,
         addRoom,
         removeRoom,
+        canJoin,
         joinRoom,
-        leaveRoom,
-        getUser,
-        renameUser,
-        appendMessage
+        leaveRoom
     }
 }
