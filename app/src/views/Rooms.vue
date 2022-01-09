@@ -59,7 +59,7 @@ export default {
         },
         join(room) {
             console.log(`Joining room: #${room.id}`);
-            this.$router.push(`/room/${room.id}`);
+            this.$router.push({ name: 'room', params: { id: room.id }});
         }
     }
 }
