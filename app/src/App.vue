@@ -13,6 +13,9 @@ export default {
   }},
   mounted() {
     this.io = Connection();
+    this.$router.afterEach(() => {
+      this.io.$resetListeners();
+    });
   }
 }
 </script>
