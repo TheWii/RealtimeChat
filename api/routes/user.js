@@ -4,10 +4,10 @@ import * as validation from '../validation/user.js';
 
 export default UserRouter;
 
-export function UserRouter() {
+export function UserRouter(services) {
     const router = express.Router();
 
-    router.post('/name', (req, res) => {
+    router.post('/name', async (req, res) => {
         console.log(`[UserRouter] POST name -> Setting user name.`);
         const name = req.body.name;
         const { error, value } = validation.username(name);
@@ -20,6 +20,9 @@ export function UserRouter() {
             secure: !process.env.DEV_ENV
         });
         res.json({ name: value });
+        const userId = req.cookies['user'];
+        const user = await services.connection.getUser(userId);
+        user.name = value;
     });
 
     router.get('/leave', (req, res) => {

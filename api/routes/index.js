@@ -8,7 +8,7 @@ export default ApiRouter;
 export function ApiRouter(services) {
     const router = express.Router();
 
-    router.use('/user', UserRouter());
+    router.use('/user', UserRouter(services));
     router.use('/rooms', RoomRouter(services));
 
     return router;

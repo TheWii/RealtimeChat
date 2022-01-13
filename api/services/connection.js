@@ -13,6 +13,7 @@ export default function Connection(io) {
 
     io.use(parseCookies);
     io.use(setPropertyFromCookie('user', 'userId'));
+    io.use(setPropertyFromCookie('name'));
 
     io.on('connection', connection);
     function connection(user) {
