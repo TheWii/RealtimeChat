@@ -3,7 +3,17 @@ import { io } from 'socket.io-client';
 export default Connection;
 
 export function Connection() {
-    const socket = io();
+    const socket = io({
+        autoConnect: false
+    });
+
+    fetch('/api/user/id')
+        .then(async res => res.text())
+        .then(id => {
+            socket.userId = id;
+            socket.connect();
+        }
+    );
 
     socket.setProp = function(prop, val) {
         this[prop] = val;

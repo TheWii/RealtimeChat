@@ -2,6 +2,8 @@
 import express from 'express';
 import * as validation from '../validation/user.js';
 
+import { generateId } from './middlewares/user.js';
+
 export default UserRouter;
 
 export function UserRouter(services) {
@@ -21,9 +23,21 @@ export function UserRouter(services) {
         });
         res.json({ name: value });
         const userId = req.cookies['user'];
+        if (!userId) return;
         const user = await services.connection.getUser(userId);
         user.name = value;
     });
+
+    router.get('/id', (req, res) => {
+        console.log(`[UserRouter] GET id.`);
+        let id = req.cookies['user'];
+        if (!id) {
+            id = generateId();
+            res.cookie('user', id);
+        }
+        res.send(id);
+    });
+
 
     router.get('/leave', (req, res) => {
         res.clearCookie('name');

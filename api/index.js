@@ -9,8 +9,6 @@ import historyApiFallback from 'connect-history-api-fallback';
 import cookieParser from 'cookie-parser';
 //import multer from 'multer';
 
-import { generateUserId } from './routes/middlewares/user.js';
-
 import Services from './services/index.js';
 import ApiRouter from './routes/index.js';
 
@@ -30,7 +28,6 @@ app.use(express.json());
 
 app.use('/api', ApiRouter(services));
 
-app.use(generateUserId);
 app.use(historyApiFallback());
 app.use(express.static('../app/build'));
 
