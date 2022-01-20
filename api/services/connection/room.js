@@ -32,12 +32,27 @@ export default function RoomHandler(io, bus) {
      * }} data
      */
     function joined(data) {
-        console.log(`RoomConnection -> Emitting user joined on room #${data.room.id}.`);
-        io.to(`room:${data.room.id}`).emit('room:joined', {
-            userId: data.user.id,
-            roomId: data.room.id,
-            userAmount: data.room.userAmount
-        })
+        const { room, user } = data;
+        console.log(`RoomConnection -> Emitting user joined on room #${room.id}.`);
+        user.join(`room:${room.id}`);
+        // send initial data to user
+        user.emit('room:joined', {
+            id: room.id,
+            name: room.name,
+            userAmount: room.userAmount,
+            messages: room.messages,
+            typing: room.typing.map( user => ({
+                id: user.userId,
+                name: user.name
+            }))
+        });
+        // notify all users in room
+        io.to(`room:${room.id}`).emit('room:user_joined', {
+            userId: user.userId,
+            userName: user.name,
+            roomId: room.id,
+            userAmount: room.userAmount
+        });
     }
 
     /**
@@ -49,20 +64,68 @@ export default function RoomHandler(io, bus) {
      * }} data
      */
     function left(data) {
-        console.log(`RoomConnection -> Emitting user left of room #${data.room.id}.`);
-        io.to(`room:${data.room.id}`).emit('room:left', {
-            userId: data.user.id,
-            roomId: data.room.id,
-            userAmount: data.room.userAmount
+        const { room, user } = data;
+        console.log(`RoomConnection -> Emitting user left of room #${room.id}.`);
+        user.leave(`room:${room.id}`);
+        io.to(`room:${room.id}`).emit('room:user_left', {
+            userId: user.userId,
+            userName: user.name,
+            roomId: room.id,
+            userAmount: room.userAmount
         })
+    } 
+
+    function receivedMessage(user, data, callback) {
+        const { text } = data;
+        const roomId = user.roomId;
+        console.log(`RoomConnection -> Received message by ${user.userId} in #${roomId}.`);
+        bus.publish('room:received_message', {
+            roomId,
+            user,
+            text,
+            createdMessage(message) {
+                callback({
+                    messageId: message.id,
+                    time: message.time
+                });
+            }
+        });
+    }
+    
+    function broadcastMessage(data) {
+        console.log(`RoomConnection -> Broadcasting message to room #${data.roomId}.`);
+        sendToRoom(data.roomId, 'room:broadcast_message', data.message);
+    }
+
+    //function userStartedTyping(user) {
+    //    console.log(`Connection -> An user started typing...`);
+    //    const roomId = user.roomId;
+    //    sendToRoom(roomId, 'user-started-typing', {
+    //        id: user.id,
+    //        name: user.name
+    //    });
+    //}
+    //function userStoppedTyping(user) {
+    //    console.log(`Connection -> An user stopped typing...`);
+    //    const roomId = user.roomId;
+    //    sendToRoom(roomId, 'user-stopped-typing', {
+    //        id: user.id,
+    //        name: user.name
+    //    });
+    //}
+    
+    function sendToRoom(roomId, event, ...args) {
+        io.in(`room:${roomId}`).emit(event, ...args);
     }
 
     return {
         bind(user) { return {
             join: join.bind(null, user),
-            leave: leave.bind(null, user)
+            leave: leave.bind(null, user),
+            send_message: receivedMessage.bind(null, user)
         }},
         joined,
-        left
+        left,
+        broadcastMessage
     }
 }

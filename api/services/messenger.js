@@ -4,7 +4,11 @@ import * as validation from '../validation/user.js';
 
 export default Messenger;
 
-export function Messenger() {
+export function Messenger(configs={}) {
+    const cfg = {
+        maxMessages: 100,
+        ...configs
+    }
     const rooms = {};
 
     const bus = EventBus();
@@ -23,6 +27,7 @@ export function Messenger() {
             password: null,
             limit: 10,
             users: {},
+            typing: [],
             messages: [],
             get userAmount() {
                 return Object.keys(this.users).length;
@@ -92,7 +97,6 @@ export function Messenger() {
     function joinRoom(cmd) {
         const { roomId, user } = cmd;
         const { status, msg } = canJoin({...cmd, verifyPassword: false});
-        //console.log(`Messenger -> ${status}: ${msg}`);
         if (status !== 200) return;
         const room = rooms[roomId];
         room.users[user.id] = user;
@@ -108,9 +112,9 @@ export function Messenger() {
      * @returns 
      */
     function leaveRoom(cmd) {
-        const { user } = cmd;
-        if (!user.roomId) return;
-        const room = rooms[user.roomId];
+        const { user, user: { roomId } } = cmd;
+        if (!roomId) return;
+        const room = rooms[roomId];
         if (!room) return;
         delete room.users[user.id];
         delete user.roomId;
@@ -118,31 +122,45 @@ export function Messenger() {
         bus.publish('room:left', { room, user });
     }
 
-    function appendMessage(roomId, message) {
-        const room = rooms[roomId];
-        if (!room) return;
-        console.log(`Message -> Appending new message to #${roomId}.`)
-        message.id = nextId();
-        room.messages.push(message);
-        if (room.messages.length > 100) room.messages.shift();
-        bus.publish(`appended-message`, {
-            roomId,
-            message
+    /**
+     * @param {{
+     *   roomId: string,
+     *   user: Socket,
+     *   message: Message
+     * }} data 
+     * @returns 
+     */
+    function receivedUserMessage(data) {
+        const { roomId, user, text, createdMessage } = data;
+        const message = createMessage({
+            type: 'user',
+            user,
+            text
         });
+        appendMessage({ roomId, message });
+        createdMessage(message);
     }
 
-    function renameUser(user, name) {
-        if (validation.username(name).error) return;
-        name = name.trim().slice(0, 19);
-        const previousName = user.name;
-        user.name = name;
-        console.log(`Messenger -> Renamed user '${previousName}' to '${user.name}'.`);
-        bus.publish('renamed-user', {
-            user,
-            previousName,
-            newName: name
-        });
+    function createMessage(data) {
+        const { type, user={}, text } = data;
+        return {
+            type,
+            senderId: user.userId,
+            senderName: user.name,
+            text,
+            id: nextId(),
+            time: Date.now(),
+        };
     }
+    
+    function appendMessage(data) {
+        const { roomId, message } = data;
+        const room = rooms[roomId];
+        if (!room) return;
+        room.messages.push(message);
+        if (room.messages.length > cfg.maxMessages) room.messages.shift();
+        bus.publish(`room:appended_message`, { roomId, message });
+    } 
     
     return {
         rooms,
@@ -152,6 +170,9 @@ export function Messenger() {
         removeRoom,
         canJoin,
         joinRoom,
-        leaveRoom
+        leaveRoom,
+        createMessage,
+        appendMessage,
+        receivedUserMessage
     }
 }
