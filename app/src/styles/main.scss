@@ -67,8 +67,17 @@ form {
 }
 
 main {
+    width: 100%;
     margin: 3rem auto;
     padding: 0 2rem;
+}
+
+#app,
+.vertical-grow {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    max-height: 100%;
 }
 
 @media screen and (max-width: 500px) {

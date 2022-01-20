@@ -1,0 +1,114 @@
+.messages {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    min-height: 10rem;
+    max-height: 100%;
+    overflow-y: scroll;
+}
+
+
+/*----------------------------------------------------------------------*/
+
+
+.message {
+    display: flex;
+    position: relative;
+    font-size: 1rem;
+    text-align: left;
+
+    > .inner {
+        position: relative;
+        display: inline-flex;
+        flex-direction: column;
+        max-width: 90%;
+        padding: 0.4rem;
+        border-radius: 0.5em;
+        background: var(--background-message);
+        color: var(--text-message);
+        
+        * {
+            z-index: 2;
+        }
+
+        .sender {
+            font-size: 0.9em;
+            padding-bottom: 0.1rem;
+            color: var(--text-message);
+            opacity: 0.9;
+        }
+        
+        .body {
+            position: relative;
+            display: inline;
+        }
+        
+        .time {
+            font-size: 0.75em;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            opacity: 0.75;
+        }
+    }
+}
+.message.mine {
+    justify-content: flex-end;
+    
+    > .inner {
+        border-color: var(--border-message-mine);
+        color: var(--text-message-mine);
+        background: var(--background-message-mine);
+    }
+}
+.message.server {
+    justify-content: center;
+    
+    > .inner {
+        padding: 0.3rem 0.5rem;
+        color: var(--text-message-server);
+        background: var(--background-message-server);
+    }
+
+    .user {
+        padding-bottom: 0.1rem;
+        color: var(--text-message-server-user);
+    }
+    
+}
+.message.pending {
+    > .inner {
+        opacity: 0.5;
+    }
+}
+.message:not(.server) > .inner .text {
+    word-wrap:break-word;
+    padding-inline-end: 3em;
+}
+
+
+.message.mine + .message.mine .sender {
+    display: none;
+}
+.message:not(.successive):not(.server) > .inner::after {
+    z-index: 1;
+    position: absolute;
+    left: -0.5em;
+    top: 0;
+    content: '';
+    font-size: 1em;
+    width: 1em;
+    height: 1em;
+    background: var(--background-message);
+    border-top-left-radius: 30%;
+    transform: translate(0.25em, -0.25em) skewX(45deg) scaleY(0.5);
+}
+.message.mine:not(.successive) > .inner::after {
+    right: none;
+    left: calc(100% - 0.5em);
+    background: var(--background-message-mine);
+    border-radius: 0;
+    border-top-right-radius: 30%;
+    transform: translate(-0.25em, -0.25em) skewX(-45deg) scaleY(0.5);
+}
