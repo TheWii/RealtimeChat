@@ -28,6 +28,9 @@ export function Services(sockets) {
     connection.subscribe('room:received_message', messenger.receivedUserMessage);
     messenger.subscribe('room:appended_message', connection.room.broadcastMessage);
     
+    connection.subscribe('room:started_typing', messenger.startedTyping);
+    connection.subscribe('room:stopped_typing', messenger.stoppedTyping);
+    
     return {
         messenger,
         connection

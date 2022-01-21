@@ -16,14 +16,30 @@ export default {
     components: {
     },
     data() { return {
-        text: ''
+        text: '',
+        delay: 2000,
+        typing: null
     }},
     methods: {
         typed() {
-
+            if (!this.typing) this.startTyping();
+            window.clearTimeout(this.typing);
+            this.typing = setTimeout(this.stopTyping.bind(this), this.delay);
+            this.$emit('typed');
+        },
+        startTyping() {
+            console.log(`Started typing...`);
+            this.$emit('started-typing');
+        },
+        stopTyping() {
+            console.log(`Stopped typing...`);
+            window.clearTimeout(this.typing);
+            this.typing = null;
+            this.$emit('stopped-typing');
         },
         send(event) {
             event.preventDefault();
+            this.stopTyping();
             this.$emit('send', this.text);
             this.text = '';
         }

@@ -29,7 +29,7 @@
             </ul>
         </div>
         <div class="info">
-            <span class="typing"></span>
+            <span class="typing">{{typingMessage}}</span>
         </div>
     </div>
 </template>
@@ -41,6 +41,16 @@ export default {
     mounted() {
         window.addEventListener("resize", this.resizeChat.bind(this), true);
         this.resizeChat();
+    },
+    computed: {
+        typingMessage() {
+            if (!this.typing.length) return '';
+            const users = this.typing.map(el => el.userName);
+            const verb = users.length > 1 ? 'are' : 'is';
+            const list = users.length > 3 ? 'Multiple users' : users.join(', ');
+            const msg = `${list} ${verb} typing...`;
+            return msg;
+        }
     },
     methods: {
         resizeChat() {
@@ -68,5 +78,11 @@ export default {
     border: 0.0625em solid var(--outline-input);
     border-radius: 0.25em;
     background: var(--background-chat);
+}
+
+.info {
+    height: 1rem;
+    text-align: left;
+    color: var(--gray);
 }
 </style>

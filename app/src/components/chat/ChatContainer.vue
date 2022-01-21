@@ -7,6 +7,8 @@
     ></ChatMessages>
     <ChatInput
       @send="sendMessage"
+      @started-typing="startedTyping"
+      @stopped-typing="stoppedTyping"
     ></ChatInput>
 </div>
 </template>
@@ -34,6 +36,8 @@ export default {
         this.io.$on('room:remove_message', this.removeMessage.bind(this));
         this.io.$on('room:user_joined', this.userJoined.bind(this));
         this.io.$on('room:user_left', this.userLeft.bind(this));
+        this.io.$on('room:started_typing', this.updateTyping.bind(this, 'started'));
+        this.io.$on('room:stopped_typing', this.updateTyping.bind(this, 'stopped'));
     },
     methods: {
         // EVENT LISTENERS
@@ -121,6 +125,27 @@ export default {
                 message.pending = false;
             });
             this.addMessage(message);
+        },
+
+        updateTyping(action, data) {
+            if (data.userId === this.io.userId) return;
+            console.log(`${data.userName} ${action} typing.`);
+            switch (action) {
+                case 'started':
+                    this.typing.push(data);
+                    break;
+                case 'stopped': {
+                    this.typing = this.typing.filter(el => el.userId !== data.userId);
+                }
+            }
+            console.log(this.typing.map(el => el.userName));
+        },
+
+        startedTyping() {
+            this.io.emit('room:started_typing');
+        },
+        stoppedTyping() {
+            this.io.emit('room:stopped_typing');
         }
     }
 }

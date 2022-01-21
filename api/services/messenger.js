@@ -160,7 +160,23 @@ export function Messenger(configs={}) {
         room.messages.push(message);
         if (room.messages.length > cfg.maxMessages) room.messages.shift();
         bus.publish(`room:appended_message`, { roomId, message });
-    } 
+    }
+
+    function startedTyping(data) {
+        const { roomId, user } = data;
+        const room = rooms[roomId];
+        if (room) room.typing.push(user);
+        console.log(`Messenger -> Updated typing state on room #${roomId}.`);
+    }
+    
+    function stoppedTyping(data) {
+        const { roomId, user } = data;
+        const room = rooms[roomId];
+        if (!room) return;
+        const index = room.typing.indexOf(user);
+        if (index >= 0) room.typing.splice(index);
+        console.log(`Messenger -> Updated typing state on room #${roomId}.`);
+    }
     
     return {
         rooms,
@@ -173,6 +189,8 @@ export function Messenger(configs={}) {
         leaveRoom,
         createMessage,
         appendMessage,
-        receivedUserMessage
+        receivedUserMessage,
+        startedTyping,
+        stoppedTyping
     }
 }

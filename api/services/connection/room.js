@@ -97,22 +97,18 @@ export default function RoomHandler(io, bus) {
         sendToRoom(data.roomId, 'room:broadcast_message', data.message);
     }
 
-    //function userStartedTyping(user) {
-    //    console.log(`Connection -> An user started typing...`);
-    //    const roomId = user.roomId;
-    //    sendToRoom(roomId, 'user-started-typing', {
-    //        id: user.id,
-    //        name: user.name
-    //    });
-    //}
-    //function userStoppedTyping(user) {
-    //    console.log(`Connection -> An user stopped typing...`);
-    //    const roomId = user.roomId;
-    //    sendToRoom(roomId, 'user-stopped-typing', {
-    //        id: user.id,
-    //        name: user.name
-    //    });
-    //}
+    function startedTyping(user) {
+        const { roomId, userId, name: userName } = user;
+        console.log(`RoomConnection -> ${user.name} started typing in room #${roomId}...`);
+        bus.publish('room:started_typing', { roomId, user });
+        sendToRoom(roomId, 'room:started_typing', { userId, userName });
+    }
+    function stoppedTyping(user) {
+        const { roomId, userId, name: userName } = user;
+        console.log(`RoomConnection -> ${user.name} stopped typing in room #${roomId}...`);
+        bus.publish('room:stopped_typing', { roomId, user });
+        sendToRoom(roomId, 'room:stopped_typing', { userId, userName });
+    }
     
     function sendToRoom(roomId, event, ...args) {
         io.in(`room:${roomId}`).emit(event, ...args);
@@ -122,7 +118,9 @@ export default function RoomHandler(io, bus) {
         bind(user) { return {
             join: join.bind(null, user),
             leave: leave.bind(null, user),
-            send_message: receivedMessage.bind(null, user)
+            send_message: receivedMessage.bind(null, user),
+            started_typing: startedTyping.bind(null, user),
+            stopped_typing: stoppedTyping.bind(null, user)
         }},
         joined,
         left,
