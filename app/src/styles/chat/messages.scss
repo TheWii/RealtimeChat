@@ -11,7 +11,7 @@
 
 /*----------------------------------------------------------------------*/
 
-
+/* GENERAL MESSAGE */
 .message {
     display: flex;
     position: relative;
@@ -21,29 +21,43 @@
     > .inner {
         position: relative;
         display: inline-flex;
-        flex-direction: column;
-        max-width: 90%;
-        padding: 0.4rem;
-        border-radius: 0.5em;
-        background: var(--background-message);
-        color: var(--text-message);
-        
+
         * {
             z-index: 2;
         }
+    }    
+}
 
-        .sender {
-            font-size: 0.9em;
-            padding-bottom: 0.1rem;
-            color: var(--text-message);
-            opacity: 0.9;
+
+/* TYPE SPECIFIC MESSAGES */
+.message.user {
+    > .inner {
+        flex-direction: column;
+        max-width: 90%;
+        padding: 0.4rem 0.75rem;
+        border-radius: 0.5em;
+        background: var(--background-message);
+        color: var(--text-message);
+    }
+
+    .sender {
+        font-size: 0.9em;
+        padding-bottom: 0.1rem;
+        color: var(--text-message);
+        opacity: 0.9;
+    }
+    &.successive .sender {
+        display: none;
+    }    
+    
+    .body {
+        position: relative;
+        display: inline;
+
+        .text {
+            word-wrap: break-word;
+            padding-inline-end: 3em;
         }
-        
-        .body {
-            position: relative;
-            display: inline;
-        }
-        
         .time {
             font-size: 0.75em;
             position: absolute;
@@ -52,21 +66,41 @@
             opacity: 0.75;
         }
     }
-}
-.message.mine {
-    justify-content: flex-end;
-    
-    > .inner {
-        border-color: var(--border-message-mine);
-        color: var(--text-message-mine);
-        background: var(--background-message-mine);
+
+    .pending-icon {
+        position: absolute;
+        left: calc(100% + 0.45rem);
+        top: 50%;
+        color: var(--gray);
+        transform: translateY(-50%);
+    }
+
+    &.mine {
+        justify-content: flex-end;
+        
+        > .inner {
+            border-color: var(--border-message-mine);
+            color: var(--text-message-mine);
+            background: var(--background-message-mine);
+            transition: transform 0.3s ease-out;
+        }
+        &.pending > .inner {
+            opacity: 0.5;
+            transform: translateX(-1.5rem);
+        }
+
+        .sender {
+            display: none;        
+        } 
     }
 }
+
 .message.server {
     justify-content: center;
     
     > .inner {
         padding: 0.3rem 0.5rem;
+        border-radius: 0.5em;
         color: var(--text-message-server);
         background: var(--background-message-server);
     }
@@ -77,38 +111,30 @@
     }
     
 }
-.message.pending {
-    > .inner {
-        opacity: 0.5;
+
+
+/* MESSAGE BALLOON EDGE */
+.message.user:not(.successive) {
+    > .inner::after {
+        position: absolute;
+        top: 0;
+        z-index: 1;
+        font-size: 1em;
+        content: '';
+        width: 1em;
+        height: 1em;
     }
-}
-.message:not(.server) > .inner .text {
-    word-wrap:break-word;
-    padding-inline-end: 3em;
-}
-
-
-.message.mine + .message.mine .sender {
-    display: none;
-}
-.message:not(.successive):not(.server) > .inner::after {
-    z-index: 1;
-    position: absolute;
-    left: -0.5em;
-    top: 0;
-    content: '';
-    font-size: 1em;
-    width: 1em;
-    height: 1em;
-    background: var(--background-message);
-    border-top-left-radius: 30%;
-    transform: translate(0.25em, -0.25em) skewX(45deg) scaleY(0.5);
-}
-.message.mine:not(.successive) > .inner::after {
-    right: none;
-    left: calc(100% - 0.5em);
-    background: var(--background-message-mine);
-    border-radius: 0;
-    border-top-right-radius: 30%;
-    transform: translate(-0.25em, -0.25em) skewX(-45deg) scaleY(0.5);
+    
+    &:not(.mine) > .inner::after {
+        left: -0.5em;
+        border-top-left-radius: 30%;
+        background: var(--background-message);
+        transform: translate(0.25em, -0.25em) skewX(45deg) scaleY(0.5);
+    }
+    &.mine > .inner::after {
+        right: -0.5em;
+        border-top-right-radius: 30%;
+        background: var(--background-message-mine);
+        transform: translate(-0.25em, -0.25em) skewX(-45deg) scaleY(0.5);
+    }
 }

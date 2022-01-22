@@ -11,7 +11,8 @@
                         message.type,
                         {
                             mine: isMine(message),
-                            successive: message.successive
+                            successive: message.successive,
+                            pending: message.pending
                         },
                     ]"
                     :key="message.key"
@@ -21,6 +22,9 @@
                         <div class="body">
                             <span class="text">{{ message.text }}</span>
                             <span class="time">{{ getTime(message) }}</span>
+                        </div>
+                        <div v-if="message.pending" class="pending-icon">
+                            ...
                         </div>
                     </div>
 

@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { reactive } from 'vue';
 import ChatMessages from './ChatMessages.vue';
 import ChatInput from './ChatInput.vue';
 export default {
@@ -102,7 +103,7 @@ export default {
 
         generateMessage(text, options={}) {
             console.log(`Message is being generated.`);
-            return {
+            return reactive({
                 type: "user",
                 key: null,
                 id: null,
@@ -112,7 +113,7 @@ export default {
                 time: Date.now(),
                 text,
                 ...options
-            };
+            });
         },
 
         // ACTION METHODS
