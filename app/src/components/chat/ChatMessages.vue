@@ -1,7 +1,9 @@
 <template>
     <div class="chat-messages vertical-grow">
         <div class="messages-wrap vertical-grow" ref="chat">
-            <ul class="messages" ref="messages">
+            <ul class="messages" ref="messages"
+              @scroll="scrolled"
+            >
                 <li
                     v-for="message in messages"
                     :class="[
@@ -38,9 +40,16 @@
 export default {
     name: "ChatMessages",
     props: ["userId", "messages", "typing"],
+    data() { return {
+        autoScroll: true
+    }},
     mounted() {
         window.addEventListener("resize", this.resizeChat.bind(this), true);
         this.resizeChat();
+        this.scrolled();
+    },
+    updated() {
+        if (this.autoScroll) this.scrollToBottom();
     },
     computed: {
         typingMessage() {
@@ -66,6 +75,15 @@ export default {
             const time = new Date(message.time).toTimeString();
             return time.replace(/.*?(\d{2}:\d{2}).*/, "$1");
         },
+        scrolled() {
+            const ul = this.$refs.messages;
+            const scrollPos = ul.scrollHeight - ul.offsetHeight;
+            this.autoScroll = Math.abs(ul.scrollTop - scrollPos) < 1;
+        },
+        scrollToBottom() {
+            const ul = this.$refs.messages;
+            ul.scrollTop = ul.scrollHeight;
+        }
     },
 };
 </script>
