@@ -3,9 +3,12 @@
     <HomeButton></HomeButton>
 </Header>
 <main class="vertical-grow">
-    <div class="container vertical-grow">
+    <div class="chat-container">
+        <ChatDetails
+            :io="io"
+        ></ChatDetails>
         <ChatContainer
-          :io="io"
+            :io="io"
         ></ChatContainer>
     </div>
 </main>
@@ -15,6 +18,7 @@
 import Header from '../components/Header.vue';
 import HomeButton from '../components/nav/HomeButton.vue';
 import ChatContainer from '../components/chat/ChatContainer.vue';
+import ChatDetails from '../components/chat/ChatDetails.vue';
 import * as Rooms from '../services/rooms.js';
 
 export default {
@@ -22,13 +26,13 @@ export default {
     components: {
         Header,
         HomeButton,
-        ChatContainer
+        ChatContainer,
+        ChatDetails
     },
     props: [ 'io', 'id' ],
     data() { return {
         name: this.$cookies.get('name'),
-        token: null,
-        room: {}
+        token: null
     }},
     /** Attempt to authorize user to join the room.
      * 
@@ -53,9 +57,6 @@ export default {
         this.io.$on('room:unauthorized', () => {
             this.$router.push({ name: 'join-room', params: { id: this.id }});
         });
-        this.io.$on('room:joined', (room) => {
-            this.room = room;
-        });
     },
     beforeRouteLeave() {
         this.io.emit('room:leave');
@@ -70,8 +71,9 @@ body {
 }
 
 main {
+    flex-grow: 1;
     margin: 1rem auto;
-    max-width: 50rem;
+    max-width: 70rem;
 
     ::-webkit-scrollbar {
         width: 0.625rem;
@@ -90,38 +92,32 @@ main {
     }
 }
 
-.container {
-    padding: 0.5rem;
+.chat-container {
+    flex-grow: 1;
+    display: grid;
+    grid-template-columns: 15rem auto;
+    grid-gap: 1rem;
+}
 
-    > .name {
-        color: var(--text-blue);
-        font-size: 1.3em;
-        text-align: center;
+@media screen and (max-width: 800px) {
+    .chat-container {
+        padding: 2rem 3rem;
+        grid-template-columns: auto;
+        grid-template-rows: 2rem auto;
+        border-radius: 0.25rem;
+        box-shadow: 0 0 0.75rem rgba(0, 0, 0, 0.075);
+        background: var(--background-container);
     }
-
-    > .top {
-        display: flex;
-        gap: 1rem;
-        padding: 0.2em;
-        justify-content: space-between;
-        align-items: center;
-    }    
 }
 
 @media screen and (max-width: 500px) {
     main {
         padding: 0;
+        margin-bottom: 0;
+    }
 
-        .container {
-            > .top {
-                flex-direction: column;
-                gap: 0.2em;
-            }
-
-            .send-message {
-                flex-direction: column;
-            }
-        }
+    .chat-container {
+        padding: 1.5rem;
     }
 }
 </style>

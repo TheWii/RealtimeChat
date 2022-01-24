@@ -39,11 +39,15 @@ export default function RoomHandler(io, bus) {
         user.emit('room:joined', {
             id: room.id,
             name: room.name,
-            userAmount: room.userAmount,
             messages: room.messages,
-            typing: room.typing.map( user => ({
-                id: user.userId,
-                name: user.name
+            limit: room.limit,
+            users: Object.values(room.users).map(u => ({
+                id: u.userId,
+                name: u.name
+            })),
+            typing: room.typing.map( u => ({
+                id: u.userId,
+                name: u.name
             }))
         });
         // notify all users in room

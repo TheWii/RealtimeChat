@@ -73,6 +73,7 @@ input {
     input {
         background: var(--background-chat);
         flex-grow: 1;
+        min-width: 0;
     }
 
     button.send-message {
@@ -83,6 +84,7 @@ input {
 @media screen and (max-width: 500px) {
     .chat-input {
         flex-direction: column;
+        gap: 0.5rem;
     }
 }
 </style>

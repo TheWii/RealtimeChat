@@ -1,5 +1,5 @@
 <template>
-<div class="chat container box vertical-grow">
+<div class="chat container">
     <ChatMessages
       :userId="io.userId"
       :messages="messages"
@@ -47,7 +47,6 @@ export default {
             for (let message of room.messages) {
                 this.addMessage(message);
             }
-            this.messages = room.messages;
             this.typing = room.typing;
         },
         receivedMessage(message) {
@@ -153,7 +152,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../styles/container.scss';
+@import '../../styles/chat/container.scss';
 
 @media screen and (max-width: 500px) {
     main {
