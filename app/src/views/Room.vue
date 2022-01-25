@@ -74,22 +74,6 @@ main {
     flex-grow: 1;
     margin: 1rem auto;
     max-width: 70rem;
-
-    ::-webkit-scrollbar {
-        width: 0.625rem;
-    }
-
-    ::-webkit-scrollbar-track {
-        background: var(--scroll-track);
-        border-radius: 0.3em;
-    }
-    ::-webkit-scrollbar-thumb {
-        background: var(--scroll-thumb);
-        border-radius: 0.3em;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-        background: var(--scroll-thumb-hover);
-    }
 }
 
 .chat-container {
